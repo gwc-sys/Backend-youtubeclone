@@ -9,19 +9,6 @@ const asyncHandler = (requestHandler) => {
 export {asyncHandler}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 // this is wrapper function
 // const  asyncHandler = (fn) => async (req , res , next ) => {
     //     try {
