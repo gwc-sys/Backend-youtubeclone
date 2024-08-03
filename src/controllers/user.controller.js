@@ -18,15 +18,14 @@ const registerUser = asyncHandler(async (req, res) => {
     // return response 
 
     const { fullname, email, username, password } = req.body
-    console.log("email", email);
     if (
         [fullname, email, username, password].some((field) =>
-            field.trim() === "")
+            field?.trim() === "")
     ) {
         throw new ApiError(400, " all filed are required")
     }
 
-    const existedUser = User.findOne({
+    const existedUser = await User.findOne({
         $or: [{ username }, { email }]
     })
 
@@ -34,9 +33,9 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new ApiError(409, " User with email or username already exists")
     }
 
-    // File upload on Clodinary 
-    const avatarLocalPath = req.files?.avatar[0]?.path;
-    const coverImageLocalPth = req.files?.coverImage[0]?.path;
+    // File upload on localserver
+    const avatarLocalPath =  req.files?.avatar[0]?.path;
+    const coverImageLocalPth =  req.files?.coverImage[0]?.path;
 
     if (!avatarLocalPath) {
         throw new ApiError(400, " avatar file is required")
@@ -51,11 +50,11 @@ const registerUser = asyncHandler(async (req, res) => {
 
     const user = await User.create({
         fullname,
-        avatar: avatar?.url || "",
+        avatar: avatar.url,
         coverImage: coverImage?.url || "",
         email,
         password,
-        username: username.toLowerCase()
+        username: username
     })
 
     const createdUser = await User.findById(user._id).select(
@@ -66,11 +65,9 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new ApiError(500, "Something went wring while registering the user ")
     }
 
-    return res.starus(201).json(
-        new ApiResponse(200,createdUser , " User register Successfully")
+    return res.status(201).json(
+        new ApiResponse(200, createdUser, " User register Successfully")
     )
 })
-
-
 
 export { registerUser }

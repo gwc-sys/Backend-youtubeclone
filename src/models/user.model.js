@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import jwt from "jwt";
+import jwt from 'jsonwebtoken';
 import bcrypt from "bcrypt"
 
 const userSchema = new Schema({
@@ -26,7 +26,7 @@ const userSchema = new Schema({
             trim:true,
             index:true
         },
-    avata:{
+    avatar:{
             type:String, // cloudinary url
             require:true,
         },
@@ -47,7 +47,7 @@ const userSchema = new Schema({
         type : String
     }    
 
-},{timeseries :true});
+},{timeseries : true});
 
 // This pre method is used to encrypt data 
 userSchema.pre("save" , async function (next) {

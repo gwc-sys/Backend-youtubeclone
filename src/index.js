@@ -3,7 +3,7 @@ import connectDB from "./db/DBindex.js"
 import { app } from "./app.js"
 
 dotenv.config({
-    path:'./env'
+    path:'./.env'
 })
 connectDB()
 .then(() => {app.on("error",(error) => {console.log("ERROR", error);
